@@ -1,34 +1,49 @@
 class DiceController < ApplicationController
-
-  def check_status
-    (params["status"] == "playing") ? roll_dice : display_instructions
+  def dice
   end
 
-  def roll_dice
-    die = [{:fname => "d01.png", :value => 1}, {:fname => "d02.png", :value => 2}, {:fname => "d03.png", :value => 3},
-            {:fname => "d04.png", :value => 4}, {:fname => "d05.png", :value => 5}, {:fname => "d06.png", :value => 6}]
+  def play
+    #roll dice
+    die = {:fname => "d01.png", :value => 1}, {:fname => "d02.png", :value => 2}, {:fname => "d03.png", :value => 3},
+           {:fname => "d04.png", :value => 4}, {:fname => "d05.png", :value => 5}, {:fname => "d06.png", :value => 6}
 
-    dice_pairs = die.product(die)
-    @roll = die.sample(1)
-    render "dice"
+    @side1 = die.sample(1)
+    @side2 = die.sample(1)
+    @value = @side1[0][:value] + @side2[0][:value]
 
-  end
+    @target = params["target"].to_i
+    if @target == 0
+      #This is the first roll. 7 or 11 auto WIN
+      if @value == 7 || @value == 11
+        @message = "You Win!"
+        @button = {:link => "/dice/play", :text => "Start Over."}
 
+      else
+        if @value == 2 || @value == 3 || @value == 12 #2,3,12  User looses
+          @message = "You lose."
+          @button = {:link => "/dice/play", :text => "Start Over."}
+        else
+          @message = "Your goal is now #{@value}."
+          @message2 = "Now try to get a #{@value} again before you roll a 7"
+          @button = {:link => "/dice/play?target=#{@value}", :text => "Roll the dice."}
+        end
+      end
 
-
-
-  def display_instructions
-    @content = <<-eos
-    <h2>Welcome</h2><p>Here are the rules:</p>
-    <ul>
-    <li>Roll the dice to start the game.</li>
-    <li>If your first roll is a 7 or 11, you win.</li>
-    <li>If your first roll is a 2, 3, or 12, you lose.</li>
-    <li>Anything else becomes your <i>goal</i>. Roll your goal again before rolling a 7, and you win.  Roll a 7
-    instead of your goal, and you lose.</li>
-  </ul>
-  eos
-    @button = {:link => "/dice?status=playing", :text => "Roll to start the game!"}
-    render "dice"
+    else
+      #if target = roll, win
+      if @target == @value
+         @message = "You Win!"
+         @button = {:link => "/dice/play", :text => "Start Over."}
+      else
+        if @value == 7
+          @message = "You Lose."
+          @button = {:link => "/dice/play", :text => "Start Over."}
+        else
+          @message = "Your rolled #{@value}"
+          @message2 = "Roll again to try to get a #{@target} before you roll a 7"
+          @button = {:link => "/dice/play?target=#{@target}", :text => "Roll the dice."}
+        end
+      end
+    end
   end
 end

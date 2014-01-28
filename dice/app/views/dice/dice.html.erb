@@ -1,9 +1,17 @@
 <div class="container">
-    <h1>Dice Game</h1>
-    <!-- Beginning text -->
-   <%= raw @content %>
+    <a href="/dice"><h1>Dice Game</h1></a>
+    <h2>Welcome</h2>
+    <p>
+        Here are the rules:
+    </p>
+    <ul>
+        <li>Roll the dice to start the game.</li>
+        <li>If your first roll is a 7 or 11, you win.</li>
+        <li>If your first roll is a 2, 3, or 12, you lose.</li>
+        <li>Anything else becomes your <i>goal</i>. Roll your goal again before rolling a 7, and you win.  Roll a 7
+            instead of your goal, and you lose.</li>
+    </ul>
 
 
-
-    <a href="<%= @button[:link] %>" class="btn btn-default"><%= @button[:text] %></a>
+    <a href="/dice/play" class="btn btn-default">Roll to start the game!</a>
 </div>

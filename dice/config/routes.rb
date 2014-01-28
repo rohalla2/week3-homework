@@ -1,6 +1,7 @@
 Dice::Application.routes.draw do
 
-  get("/dice", {:controller => "dice", :action => "check_status" })
+  get("/dice", {:controller => "dice", :action => "dice" })
+  get "dice/play"
 
 
 

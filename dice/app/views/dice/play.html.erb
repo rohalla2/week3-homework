@@ -1,0 +1,12 @@
+<div class="container">
+    <a href="/dice"><h1>Dice Game</h1></a>
+
+    <img src="/assets/<%=  @side1[0][:fname]  %>">
+    <img src="/assets/<%=  @side2[0][:fname]  %>">
+
+    <h1><%=	 @message %></h1>
+    <%	 if @message2 != "" %>
+        <h3><%=	 @message2 %></h3>
+    <%	 end %>
+    <a href="<%= @button[:link] %>" class="btn btn-default"><%= @button[:text] %></a>
+</div>
